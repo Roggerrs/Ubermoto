@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Ubermoto – Home</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+</head>
+<body>
+<header>
+    <h2>Bem‐vindo, <span th:text="${username}">Usuário</span>!</h2>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Sair</button>
+    </form>
+</header>
+<main>
+    <p>Esta é a página inicial pós‐login.</p>
+    <!-- Aqui você pode colocar links para /api/drivers, /api/rides, etc. -->
+</main>
+</body>
+</html>

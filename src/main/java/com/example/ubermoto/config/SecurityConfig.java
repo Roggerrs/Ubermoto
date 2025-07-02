@@ -2,13 +2,13 @@ package com.example.ubermoto.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -19,18 +19,29 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())                   // desliga CSRF
-                .headers(headers -> headers
-                        .frameOptions(frame -> frame.disable())     // permite H2 Console em iframe
-                )
+                .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/public/**",                           // suas rotas públicas
-                                "/h2-console/**"                        // H2 Console
+                                "/public/**",
+                                "/h2-console/**",
+                                "/css/**", "/js/**", "/images/**",
+                                "/login"               // permite acesso à página de login
                         ).permitAll()
-                        .anyRequest().authenticated()               // todo o resto requer auth
+                        .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults());          // HTTP Basic
+                .formLogin(form -> form
+                        .loginPage("/login")                   // rota que exibe seu login.html
+                        .loginProcessingUrl("/login")          // action do form
+                        .defaultSuccessUrl("/", true)          // onde vai após autenticar
+                        .failureUrl("/login?error")            // em caso de credenciais inválidas
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                );
 
         return http.build();
     }

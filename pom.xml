@@ -6,9 +6,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<!-- Definições de encoding e versão do Java -->
 	<properties>
+		<!-- define encodings -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>17</java.version>
 	</properties>
 
@@ -16,7 +17,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 
 	<groupId>com.example</groupId>
@@ -24,22 +25,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ubermoto</name>
 	<description>Demo project for Spring Boot</description>
-	<url/>
-
-	<licenses>
-		<license/>
-	</licenses>
-
-	<developers>
-		<developer/>
-	</developers>
-
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 
 	<dependencies>
 		<!-- Spring Data JPA, Web e Validation -->
@@ -50,6 +35,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
 		<dependency>
@@ -111,8 +101,25 @@
 	</dependencies>
 
 	<build>
+		<!-- Disable filtering to avoid MalformedInputException -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
-			<!-- Spring Boot plugin -->
+			<!-- Ensure UTF-8 when copying resources -->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.3.1</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<!-- Spring Boot Maven Plugin -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -126,7 +133,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- Configuração do compilador e annotation processors -->
+			<!-- Compiler plugin with annotation processors -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -150,5 +157,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

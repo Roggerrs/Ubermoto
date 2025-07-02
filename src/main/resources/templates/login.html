@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login – Ubermoto</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div class="logo-container">
+    <img th:src="@{/images/motorcycledelivery.png}" alt="Ubermoto Logo" />
+</div>
+
+<h2>Login</h2>
+
+<form th:action="@{/login}" method="post">
+    <div th:if="${param.error}">
+        <p style="color:red">Usuário ou senha inválidos</p>
+    </div>
+    <div th:if="${param.logout}">
+        <p style="color:green">Você saiu com sucesso</p>
+    </div>
+
+    <label>Usuário:
+        <input type="text" name="username" />
+    </label>
+    <br/>
+
+    <label>Senha:
+        <input type="password" name="password" />
+    </label>
+    <br/>
+
+    <button type="submit">Entrar</button>
+</form>
+
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>
