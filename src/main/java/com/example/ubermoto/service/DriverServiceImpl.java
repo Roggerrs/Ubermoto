@@ -16,7 +16,6 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver create(Driver driver) {
-        // Todo novo motorista inicia como disponível
         driver.setAvailable(true);
         return repository.save(driver);
     }
@@ -28,17 +27,31 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver update(Long id, Driver driver) {
-        // Busca o motorista existente ou lança exceção
         Driver existing = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Driver não encontrado com id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Driver não encontrado com id " + id));
 
-        // Atualiza apenas os campos permitidos
         existing.setName(driver.getName());
         existing.setLatitude(driver.getLatitude());
         existing.setLongitude(driver.getLongitude());
         existing.setAvailable(driver.getAvailable());
 
         return repository.save(existing);
+    }
+
+    @Override
+    public Driver findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Driver não encontrado com id " + id));
+    }
+
+    @Override
+    public void delete(Long id) {
+        Driver d = findById(id);
+        repository.delete(d);
+    }
+
+    @Override
+    public List<Driver> findNearest(double lat, double lng) {
+        return repository.findNearestAvailable(lat, lng);
     }
 }
