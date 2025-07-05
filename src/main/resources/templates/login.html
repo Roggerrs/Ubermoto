@@ -7,51 +7,32 @@
 </head>
 <body>
 
-<div class="login-wrapper">
-    <div class="logo-container">
-        <img th:src="@{/images/motorcycledelivery.png}" alt="Ubermoto Logo" />
+<div class="logo-container">
+    <img th:src="@{/images/motorcycledelivery.png}" alt="Ubermoto Logo" />
+</div>
+
+<h2>Login</h2>
+
+<form th:action="@{/login}" method="post">
+    <div th:if="${param.error}">
+        <p style="color:red">Usuário ou senha inválidos</p>
+    </div>
+    <div th:if="${param.logout}">
+        <p style="color:green">Você saiu com sucesso</p>
     </div>
 
-    <h2>Login</h2>
+    <label>Usuário:
+        <input type="text" name="username" />
+    </label>
+    <br/>
 
-    <form th:action="@{/login}" method="post">
-        <div th:if="${param.error}">
-            <p style="color:red">Usuário ou senha inválidos</p>
-        </div>
-        <div th:if="${param.logout}">
-            <p style="color:green">Você saiu com sucesso</p>
-        </div>
+    <label>Senha:
+        <input type="password" name="password" />
+    </label>
+    <br/>
 
-        <label>Usuário:
-            <input type="text" name="username" />
-        </label>
-        <br/>
-
-        <label>Senha:
-            <input type="password" name="password" />
-        </label>
-        <br/>
-
-        <button type="submit">Entrar</button>
-
-        <!-- Botão de login com Gmail -->
-        <div style="margin-top: 16px; text-align: center;">
-            <a href="/oauth2/authorization/google" style="text-decoration: none;">
-                <button type="button" style="
-                    background: #DB4437;
-                    color: white;
-                    padding: 10px 20px;
-                    border: none;
-                    border-radius: 4px;
-                    width: 100%;
-                    margin-top: 10px;
-                ">
-                    Entrar com Gmail
-                </button>
-            </a>
-        </div>
-    </form>
-</div>
+    <button type="submit">Entrar</button>
+</form>
 
 <script th:src="@{/js/script.js}"></script>
 </body>
