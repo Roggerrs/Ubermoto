@@ -10,8 +10,17 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model, Authentication auth) {
-        // Coloca o nome do usuário logado no template
-        model.addAttribute("username", auth.getName());
-        return "index";   // Thymeleaf irá renderizar templates/index.html
+        Object principal = auth.getPrincipal();
+
+        if (principal instanceof org.springframework.security.oauth2.core.user.DefaultOAuth2User oauthUser) {
+            String email = oauthUser.getAttribute("email");
+            String nome = oauthUser.getAttribute("name"); // Pode ser nulo dependendo das permissões
+
+            model.addAttribute("username", nome != null ? nome : email);
+        } else {
+            model.addAttribute("username", auth.getName()); // login tradicional
+        }
+
+        return "index"; // index.html com Thymeleaf
     }
 }

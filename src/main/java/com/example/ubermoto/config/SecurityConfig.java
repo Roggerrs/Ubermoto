@@ -34,6 +34,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            AuthenticationProvider authProvider) throws Exception {
         http
+
+
                 .authenticationProvider(authProvider)
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
@@ -63,6 +65,12 @@ public class SecurityConfig {
                         .failureUrl("/login?error")
                         .permitAll()
                 )
+
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/", true)
+                )
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
