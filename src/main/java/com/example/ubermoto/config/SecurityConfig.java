@@ -36,24 +36,15 @@ public class SecurityConfig {
         http
                 .authenticationProvider(authProvider)
                 .csrf(csrf -> csrf.disable())
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .authorizeHttpRequests(auth -> auth
-                        // libera Swagger/OpenAPI
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html"
-                        ).permitAll()
-                        // libera recursos públicos, H2 e login
-                        .requestMatchers(
                                 "/public/**",
                                 "/h2-console/**",
-                                "/css/**",
-                                "/js/**",
-                                "/images/**",
-                                "/login"
+                                "/login",
+                                "/images/**" // 👈 ADICIONADO para liberar acesso à logo
                         ).permitAll()
-                        // resto exige autenticação
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -61,12 +52,14 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/", true)
                         .failureUrl("/login?error")
-                        .permitAll()
+                )
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/", true)
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
-                        .permitAll()
                 );
 
         return http.build();

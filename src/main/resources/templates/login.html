@@ -1,39 +1,111 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <title>Login – Ubermoto</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-wrapper {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px; /* define uma altura fixa */
+    overflow: hidden; /* evita que ela ultrapasse esse limite */
+    margin-bottom: 20px;
+}
+
+.logo-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* mantém proporção dentro do espaço */
+}
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button[type="submit"], .google-login-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #333;
+            color: white;
+        }
+
+        .google-login-btn {
+            background-color: #DB4437;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
 
-<div class="logo-container">
-    <img th:src="@{/images/motorcycledelivery.png}" alt="Ubermoto Logo" />
+<div class="login-wrapper">
+    <div class="logo-container">
+        <img src="/images/motorcycledelivery.png" alt="Ubermoto Logo" />
+    </div>
+
+    <h2>Login</h2>
+
+    <form action="/login" method="post">
+        <div>
+            <!-- Aqui você pode controlar as mensagens dinamicamente com Thymeleaf -->
+            <!-- <div th:if="${param.error}"> -->
+            <p style="color:red">Usuário ou senha inválidos</p>
+            <!-- </div> -->
+            <!-- <div th:if="${param.logout}"> -->
+            <p style="color:green">Você saiu com sucesso</p>
+            <!-- </div> -->
+        </div>
+
+        <label>Usuário:
+            <input type="text" name="username" />
+        </label>
+
+        <label>Senha:
+            <input type="password" name="password" />
+        </label>
+
+        <button type="submit">Entrar</button>
+
+        <!-- Botão de login com Gmail -->
+        <a href="/oauth2/authorization/google" class="google-login-btn">Entrar com Gmail</a>
+    </form>
 </div>
 
-<h2>Login</h2>
-
-<form th:action="@{/login}" method="post">
-    <div th:if="${param.error}">
-        <p style="color:red">Usuário ou senha inválidos</p>
-    </div>
-    <div th:if="${param.logout}">
-        <p style="color:green">Você saiu com sucesso</p>
-    </div>
-
-    <label>Usuário:
-        <input type="text" name="username" />
-    </label>
-    <br/>
-
-    <label>Senha:
-        <input type="password" name="password" />
-    </label>
-    <br/>
-
-    <button type="submit">Entrar</button>
-</form>
-
-<script th:src="@{/js/script.js}"></script>
 </body>
 </html>

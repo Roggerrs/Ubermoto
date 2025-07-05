@@ -16,6 +16,45 @@
   width: 120px;
   height: auto;
 }
+/* Aplica layout centralizado na tela inteira */
+/* Estilo global */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  font-family: Arial, sans-serif;
+}
+
+/* Centraliza o conteúdo */
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Logo */
+.logo-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.logo-container img {
+  width: 120px;
+  height: auto;
+}
+
+/* Título */
+h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+}
 
 /* Formulário */
 form {
@@ -27,29 +66,63 @@ form {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
+/* Labels e campos */
 form label {
   display: block;
   margin-bottom: 10px;
+  font-weight: bold;
+  color: #555;
 }
 
 form input {
   width: 100%;
   padding: 8px;
   margin-top: 4px;
+  margin-bottom: 12px;
   box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-form button {
+/* Botão padrão */
+form button[type="submit"] {
   width: 100%;
   padding: 10px;
-  margin-top: 16px;
   background: #007bff;
   border: none;
   color: #fff;
   cursor: pointer;
   border-radius: 4px;
+  font-weight: bold;
 }
 
-form button:hover {
+form button[type="submit"]:hover {
   background: #0056b3;
+}
+
+/* Botão de login com Gmail */
+.google-login {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.google-login button {
+  background-color: #DB4437;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.google-login button:hover {
+  background-color: #c23326;
+}
+
+/* Mensagens de status */
+.status-message {
+  text-align: center;
+  margin-bottom: 16px;
 }
