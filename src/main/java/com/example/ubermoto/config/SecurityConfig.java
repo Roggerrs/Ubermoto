@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -36,6 +36,7 @@ public class SecurityConfig {
         http
                 .authenticationProvider(authProvider)
                 .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions(frame -> frame.disable())) // Para liberar o H2 Console
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/v3/api-docs/**",
@@ -43,7 +44,7 @@ public class SecurityConfig {
                                 "/public/**",
                                 "/h2-console/**",
                                 "/login",
-                                "/images/**" // 👈 ADICIONADO para liberar acesso à logo
+                                "/images/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -75,7 +76,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance(); // ⚠️ Apenas para testes locais
     }
 
     @Bean
