@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login – Ubermoto</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,19 +23,19 @@
         }
 
         .logo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 120px; /* define uma altura fixa */
-    overflow: hidden; /* evita que ela ultrapasse esse limite */
-    margin-bottom: 20px;
-}
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 120px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
 
-.logo-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* mantém proporção dentro do espaço */
-}
+        .logo-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
 
         label {
             display: block;
@@ -57,6 +58,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-weight: bold;
         }
 
         button[type="submit"] {
@@ -70,6 +72,10 @@
             text-decoration: none;
             display: inline-block;
         }
+
+        .status-message {
+            margin-bottom: 16px;
+        }
     </style>
 </head>
 <body>
@@ -82,14 +88,16 @@
     <h2>Login</h2>
 
     <form action="/login" method="post">
-        <div>
-            <!-- Aqui você pode controlar as mensagens dinamicamente com Thymeleaf -->
-            <!-- <div th:if="${param.error}"> -->
-            <p style="color:red">Usuário ou senha inválidos</p>
-            <!-- </div> -->
-            <!-- <div th:if="${param.logout}"> -->
-            <p style="color:green">Você saiu com sucesso</p>
-            <!-- </div> -->
+        <div class="status-message">
+            <div th:if="${param.error}">
+                <p style="color:red">⚠️ Usuário ou senha inválidos</p>
+            </div>
+            <div th:if="${param.logout}">
+                <p style="color:green">✅ Você saiu com sucesso</p>
+            </div>
+            <div th:if="${param.expired}">
+                <p style="color:orange">⏳ Sua sessão expirou. Faça login novamente.</p>
+            </div>
         </div>
 
         <label>Usuário:

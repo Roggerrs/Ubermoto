@@ -12,10 +12,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Configuration
@@ -36,7 +39,7 @@ public class SecurityConfig {
         http
                 .authenticationProvider(authProvider)
                 .csrf(csrf -> csrf.disable())
-                .headers(headers -> headers.frameOptions(frame -> frame.disable())) // Para liberar o H2 Console
+                .headers(headers -> headers.frameOptions(frame -> frame.disable())) // Libera H2 Console
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/v3/api-docs/**",
@@ -44,7 +47,8 @@ public class SecurityConfig {
                                 "/public/**",
                                 "/h2-console/**",
                                 "/login",
-                                "/images/**"
+                                "/images/**",
+                                "/senha/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -61,6 +65,11 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
+                )
+                .exceptionHandling(exception ->
+                        exception.authenticationEntryPoint((request, response, authException) -> {
+                            response.sendRedirect("/login?expired=true"); // 👈 Redireciona se token expirou
+                        })
                 );
 
         return http.build();
@@ -76,7 +85,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance(); // ⚠️ Apenas para testes locais
+        return new BCryptPasswordEncoder(); // ✅ Agora sim vai bater o hash!
     }
 
     @Bean
