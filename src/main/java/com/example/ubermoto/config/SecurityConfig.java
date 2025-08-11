@@ -48,7 +48,8 @@ public class SecurityConfig {
                                 "/h2-console/**",
                                 "/login",
                                 "/images/**",
-                                "/senha/**"
+                                "/senha/**",
+                                "/actuator/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
